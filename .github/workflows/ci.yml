@@ -52,7 +52,7 @@ jobs:
       - name: Build Docker Model
         run: |
           cd MLProject
-          mlflow models build-docker -m runs:/${{ env.RUN_ID }}/model -n credit-scoring-model --enable-mlserver
+          mlflow models build-docker -m runs:/${{ env.RUN_ID }}/model -n breast-cancer-model --enable-mlserver
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -61,7 +61,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Tag Docker Image
-        run: docker tag credit-scoring-model ${{ secrets.DOCKER_HUB_USERNAME }}/credit-scoring-model:latest
+        run: docker tag breast-cancer-model ${{ secrets.DOCKER_HUB_USERNAME }}/breast-cancer-model:latest
 
       - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/credit-scoring-model:latest
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/breast-cancer-model:latest
