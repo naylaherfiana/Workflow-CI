@@ -54,7 +54,7 @@ jobs:
 
       - name: Build Docker Model
         run: |
-          mlflow models build-docker -m runs:/${{ env.RUN_ID }}/model -n breast-cancer-model --enable-mlserver
+          mlflow models build-docker -m runs:/${{ env.RUN_ID }}/model -n breast-cancer-model --enable-mlserver --env-manager conda
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
