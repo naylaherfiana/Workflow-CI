@@ -54,7 +54,6 @@ jobs:
 
       - name: Build Docker Model
         run: |
-          cd MLProject
           mlflow models build-docker -m runs:/${{ env.RUN_ID }}/model -n breast-cancer-model --enable-mlserver
 
       - name: Log in to Docker Hub
