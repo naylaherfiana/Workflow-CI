@@ -24,7 +24,7 @@ jobs:
         run: python --version
 
       - name: Install dependencies
-        run: pip install mlflow pandas scikit-learn
+        run: pip install mlflow==2.19.0 pandas scikit-learn
 
       - name: Run mlflow project
         run: |
@@ -54,7 +54,9 @@ jobs:
 
       - name: Build Docker Model
         run: |
-          mlflow models build-docker -m runs:/${{ env.RUN_ID }}/model -n breast-cancer-model --enable-mlserver
+          mlflow models generate-dockerfile -m runs:/${{ env.RUN_ID }}/model -d docker_build_dir --enable-mlserver
+          sed -i 's|https://bootstrap.pypa.io/get-pip.py|https://bootstrap.pypa.io/pip/3.9/get-pip.py|g' docker_build_dir/Dockerfile
+          docker build -t breast-cancer-model docker_build_dir
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
