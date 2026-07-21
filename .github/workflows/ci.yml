@@ -50,6 +50,7 @@ jobs:
           git config --global user.email "actions@github.com"
           git add MLProject/mlruns -f
           git diff --staged --quiet || git commit -m "CI: save mlflow artifact run ${{ env.RUN_ID }}"
+          git pull --rebase origin main || true
           git push
 
       - name: Build Docker Model
