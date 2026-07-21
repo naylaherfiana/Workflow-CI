@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", type=str, default="breast_cancer_preprocessing/breast_cancer_preprocessed.csv")
 args = parser.parse_args()
 
-mlflow.set_experiment("CI Breast Cancer")
+# Experiment should be set by mlflow run CLI, not here
 mlflow.autolog()
 
 data = pd.read_csv(args.data_path)
@@ -19,14 +19,9 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# MLflow run already started by mlflow run (MLProject command)
-# so we avoid using with mlflow.start_run() unless there is no active run
-if mlflow.active_run():
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
-else:
-    with mlflow.start_run(run_name="ci_random_forest"):
-        model = RandomForestClassifier(n_estimators=100, random_state=42)
-        model.fit(X_train, y_train)
+# MLflow run is managed by 'mlflow run', so we just fit the model.
+# The environment variables set by MLflow will track everything automatically.
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
 
 print("Training via MLflow Project selesai.")
